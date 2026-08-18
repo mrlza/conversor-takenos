@@ -1412,7 +1412,7 @@ section.alerts {
       <div class="field">
         <div class="field-labels">
           <span class="field-label">Cantidad en Takenos</span>
-          <output class="amount-input" id="usdAmount" aria-live="polite">0</output>
+          <input class="amount-input" id="usdAmount" inputmode="decimal" autocomplete="off" value="0" aria-label="Cantidad en Takenos (USD)">
         </div>
         <div class="fixed-currency-badge">
           <span class="flag-pill"><img class="flag-icon" src="__USD_FLAG__" alt=""></span>
@@ -1703,15 +1703,14 @@ section.alerts {
   var fromSel = { value: state.from };
   var toSel = { value: state.to };
 
-  function recompute() {
-    state.from = fromSel.value;
-    state.to = toSel.value;
-    var raw = document.getElementById("fromAmount").value.replace(/\./g, "").replace(",", ".");
+  function parseAmount(id) {
+    var raw = document.getElementById(id).value.replace(/\./g, "").replace(",", ".");
     var amount = parseFloat(raw);
     if (isNaN(amount) || amount < 0) amount = 0;
-    var result = convert(amount, state.from, state.to);
-    document.getElementById("toAmount").textContent = fmt(result, state.to);
-    document.getElementById("usdAmount").textContent = fmt(toUSD(amount, state.from), "USD");
+    return amount;
+  }
+
+  function refreshRateAndHero() {
     var rate = convert(1, state.from, state.to);
     document.getElementById("rateLine").innerHTML =
       "1 " + state.from + " = <span class=\"rate-value-strong\">" + fmtRate(rate) + " " + state.to + "</span>";
@@ -1724,10 +1723,30 @@ section.alerts {
     if (heroKicker) heroKicker.textContent = "Cotiza " + state.from + " a " + state.to + " al tipo de cambio real";
   }
 
+  function recompute() {
+    state.from = fromSel.value;
+    state.to = toSel.value;
+    var amount = parseAmount("fromAmount");
+    var result = convert(amount, state.from, state.to);
+    document.getElementById("toAmount").textContent = fmt(result, state.to);
+    document.getElementById("usdAmount").value = fmt(toUSD(amount, state.from), "USD");
+    refreshRateAndHero();
+  }
+
+  function recomputeFromUsd() {
+    state.from = fromSel.value;
+    state.to = toSel.value;
+    var usdAmount = parseAmount("usdAmount");
+    document.getElementById("fromAmount").value = fmt(fromUSD(usdAmount, state.from), state.from);
+    document.getElementById("toAmount").textContent = fmt(fromUSD(usdAmount, state.to), state.to);
+    refreshRateAndHero();
+  }
+
   var fromPicker = buildPicker("fromPicker", fromSel, recompute, ORDER_NO_USD);
   var toPicker = buildPicker("toPicker", toSel, recompute, ORDER_NO_USD);
 
   document.getElementById("fromAmount").addEventListener("input", recompute);
+  document.getElementById("usdAmount").addEventListener("input", recomputeFromUsd);
 
   document.getElementById("swapBtn").addEventListener("click", function () {
     this.classList.toggle("spun");

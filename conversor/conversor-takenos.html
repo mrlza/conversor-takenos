@@ -1351,7 +1351,7 @@ section.alerts {
       <div class="field">
         <div class="field-labels">
           <span class="field-label">Cantidad en Takenos</span>
-          <output class="amount-input" id="usdAmount" aria-live="polite">0</output>
+          <input class="amount-input" id="usdAmount" inputmode="decimal" autocomplete="off" value="0" aria-label="Cantidad en Takenos (USD)">
         </div>
         <div class="fixed-currency-badge">
           <span class="flag-pill"><img class="flag-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACE4AAAhOAFFljFgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAD01JREFUeAHtnQd0VGUWx/+ZmplJrxAgJFEIKgQFBJQmstJFVDS2XZFdlLWt6FrPuutZcAWxoMsBpNlQYa0U5URRRKT3EBJSCIT03iZTMpPJfveFSWYy7SWTaWF+57yTyZs3781893333u/e+74voJUBL0SlbUFOSRMyixpxtrARhZUaVDfqUNXYjLI6Dcrrm9Gsb0XtxnHc8QEBARAKhdxf2giRSGS23xsRwUuoU+lxNLcWu9OrkHaqCpeq1Khn+wwGfvcH3Ud6vd5sX3NzM/eXGl8gEHACIWHQRv97Ax4VgFZvwKe/FmHn8Qr8eLISap2B2y8WCqBrMaCnIOG0tLRwG0GNT5tEIvG4MDwigMM5tVix/Tx2HK3g1IgpfcMlmDsqCmt+KoGrMBgM3GbsMSQIsVjM9RB347YrNjB1sv1oGd77/iLSCxosGt7ImKuCce/YGKzdXQJ3WSdSVbRRTwgMDOSE4S7cIoCv9pfgxc3nkF+hdnjszBFRSI6TYUicHFnFKrgT6hUqlYpTS1Kp1C2CcKkADuXW4a9r03HqYiOv4wNFAZh9QwTkUiFuHxnpdgEYIVtBgqAeIZPJXKqaXHJmMnrp+dX4iRnX6cPDMWVYGHYeq0J2aUcPkIkFeHBcNKJCpe374sIkXOMTqWOjITBxHXXMfu7NrMGxfCXcBfWIpqYmzkZQj3CFsQ7o6XEAGTa6e4ynLa7W4uWt+dh5osbCpUzuK8OqBYNxI9P7ds/JPKIVO4uY4S6EodPXrds0Hu7AVb2hxwRAp9Fqtdxm5KcztXhyUy43aLIFuZxLUxPw0PgYKAItf1xWiQqLP8rDobwGq593lwCMUE+gracGdj0iAKPxMvrZxG7W+I+sPYdGdQuvc7wwZwBemTvQbN8FZrRnLs9Aaa3W5ucKog7B3YiYSop5ZRFEfaPhLE73p9zSJui1KsQx/92UpBgZNM38B1N9w6QW+/owmxAotn+nqdd9CU+g2X0Q8bvWQZTQH87glFX5gRnZh98/gaggEaffv2OG9vP95WhhPaJfhAQjEoN4nSdELsT06yO41wfz6rFs2yU0avSQSYSYmhIBb0R3Lh8XUuZCuWsvnKHbAtjKfPt73j6BmwaFooGpmUWbcvDnD7LxNNPXT3yYh7omPWYzn54PIxNCECYXYcMvpUh9N4sTwOzlZ3CRVND1kfBWDI1KlMz7Gxq27UZ36ZYAth0px/xVp6FhEcv4SCnmvn0G/ztQyWwAC4ixbcv+Cqa7zzCXkp+hGtIvEPNXn8Pzn+UzYbaFB04XNOEPr6fjXIkS/SOk8FZaVRqU3fcs6rd8j+7QZSO860QF7n7rONRaA+enC1gb621ELEXMw2lh7zm6hJQNwLQ2QhNCLpwMm6GLc988B28gQB6IuK3vIWj2pC59rks9oKBcjdR3TnKNT5BPbtr4dL8HCDruevLf+cjXtPHp0wpJx9dqYZ+31fjeBPWEkgcWQ3smp0uf4y2Asjotpi09zNxKvc1jRiYFYzob9TpDLBsZ3z8+Fr5Ia6MKRTMWQl9WxfszvARAjT5jyWFkswyVPe4aHcWCac55LWMGBePhiX2Y+vLODJYj9MXlKL77KWagm3gdz0sAS7/MdRhQkzO1MWVYBKalREEi6n7jzb0xCoNYiIIior6K5sBJVL3xAa9jHQpgd3olVmzLd3QYhsUrMCg2EDGhYuaahqA7BLIA3dSUcO4vRUN9mdrlG9C057DD4+yOhPX6FuQW1bMYjRBKTUdIgUatD06IYXe9sH3fiIQgFrBqu/NfmBOPSdd29Bgy1pt+LUVJTUdMKEwhQupNMUznd4yg+4WLobgcDb3/5hhIhB3nJ2O+52wtfs+2HhPyOthgtPS+xUjKToMgzHaw0a4bujejAk+sz8TZIkt9dvPgEKx/NJmNeO376GX1Wrz0eT6+Z9FQXYv5pajXvJGaiHFDQu0Gt2hssOTrAny8rwzNOvNz5Bx4A95MyPw7EfuGbVfZpgAOnKvG1CVH0KSxHc+hxl92XyJuH2V9xEt37OMbc1Bap7N5jhCZEItnDsDjU+MgFVtqxLwyNYuo5rBoqHUbVPP+CHgzAawXB0VF2Axj2xTAdc/8isxCx5ZcxNTOhseSOeNpyu70GjywKou3D//ktH4sLJ1oti+XNf7sN8+gvM52ONvd4ejuQLmE4GDrasiqET6YXc2r8QkhE0BCtKUaGhAViK4wpJ/cYl98lBTBUiF8HQrX63TWtYBVAcSHCxEo4edKJkQH4roBQZyR3HmiCmt+LOZe0/4RicG8zhHKAnGTrmkbwB3MbcCKHYXQ6gwsRCHAxGtD0RvQaDRWowIWAsi4WM/0kgFTh/EbUM0ZFck11uMbc/Hwmmy8vOUCFrHXNUo9l2DnAwkqlrmvy767hNuZynn92wLcuuQUMgqVuGdsDLy0qrBL2OoFFpbhkdXpzOcDi8+HYfvxatiD9H8wM6KTWWPlmiTctx6oQPpFJRZM7sPFdhxZgZGJCpY9y0ba6RoumkqcLVJhFouoPjc7nrmnUhTVaOHrUO0RJfhNMTPCv2fVYMKrB7kWI3+8SWs/nUj6X8xCBhqddU+JgmoqneNoKI2iVTayZxKmhgLYF7IVLfUFI2yKQqEw84jMVNCatIL229VR4xMUau7c+FKTFGJTM79oaOfGl5qEMpr1BpuN74uYFi0Q7QIgHbUvsxrOMC45BBOSnYuGUvJl/qQ+6K1Q4YLpTdkuAKrnuXWoc403i6UP7xzDLw1pi1EspD1/Umx7WKO3QY1vLJsn2gVAFnomS4x3NwwsY3p8FgtFz2BCkDoRDZ03NgoDo2UY2l+O3orpcwycAIz18+OTQ7lSkO6QEh/EhSYiWJBt9NXdi4YGMcN/y7VhXHnirBt8OxpqDxKAUQ1xXhDtoBpI4qvDlSz71dFF6FEhKhUnv97IwGjS0305D8jIsAEKFgFtU2GHcupx7EJHDSc9bLH5t3Kcr9C076NGfnRKX0QFd1QgU23RXaPbip3IrU1j4Yx22Pf95Wwd22rNfkxhQjp8kciH74IsJblNAGq12kwvGTmW34DFn+TjzCXLgljS1asXXI3BcQq7Fyqq1mLRhhwWRq63eO+qGBlWzr8KE4bYtz3kab26NR8f7i1vHycY8ZakfFeJeHEhopc91yaAxsZGzgsyQj+YQgordxVzz2nZIiZEjCWpSbh3bLTFaJW6GJUnPv/ZeVystD2IkksFeI5FQ5+Y3o9LxHQ+x4mLTVj8aR43sLOGrwpAcsM1SDzxLUT0Izv76qvSirH0mwKHJ6lo0GHxR7mgdrtrjHmdZNrpWhaaOMeFKeyh0hqwlIUeGrV6vDbPPBpaUKVF6spM7snI3oa+oAQGlRqCzn4pQTlZvujYYOyqPpYey9V9ZG01Jjygqw+ycg6yCcGBvdMdNTQoocsrhIBUj5IZ2nd/KMLerHpOGFOYMQ0K5BcGvoa5i0Pi2gpxN+8vw/pfSrm7nqKhw+MVvM4RzjyniSwrRtfez2zFm9sLWSKohQtDTPPS2lCnYeleTVYeRFlFSjy+/iwO5DRw4d8nmS5+ac4A3HpdOAvGOa5vmcaS6FSS+NIX+fhkXzl30+/NrMVbD13NJWmO5Dl+PGk4yydHh0iwkt0E/2ERUTK0u05VYx1LeVK2bS0TKnpPNKKd5oxciFbsKOAan6Dndt/eWYifM+rYHRmCAKbbW+2ocArGUcNNfv0UsovboqHUTvQ0TMalM3hqRhxnnB2Fg64fqMAdb2XgsMlDGCeZ0Z34r5NYPKs/N76gJ216G2QHAu5cfrT128PlFm/SyFbNo77f3nHyy+85unmDOlVdmELJehlLDqm01q/hq14QoZh9C0QlNRqrb6p5Plxh7zgVz3PYanyC7IJK2wv1D0NfWQtBSZ0GfjxDS3kVBNUNOvjxDIYq1gN6U7LD1zCw5ExAXV2dXwIexDsmzbmCEXjrTFJXAty8RX4BeI7LM3n5tZCn4ATg7wGew98DPIxfAB6GKuT8AvAgXA/w5klNezPGCWX9RthDkObhegD9485pGv20Ibz8BChXJy2oqYdy3Vb4cR9RC1OB/rK2uqCW+kacj5vATTjhx/UIQoOQdH43hJFhbSpIGBoM2VTfetDBl5GOvZ5rfKLdBw1m+Uk/7iFs4b3tr9sfUWrVNiM3ZCRam/0ZMlcSIBUjqXgfRJ17QIBUAsWcW+HHtQTNm9He+ITZMDji7wsQ4HdJXUrYovvM/jcTgGzMcIiHJ8OPa5CMGgr5ePO5LSwCQRFP/RF+XEPEM3+y2GchgOC5UyBKGgA/PYs0ZTBCH5xjsd9CAIKQIMQs891yP28l8t9PW91vc7qaCylz0NzFKRj9WEd6TRISMn+w+p5NAagPp6No1mPc+MCPE7CIZ78dq6GYNNr62/amLGvMvwS9zj8wcwaxRIygxHib79sVAL1FD/D18CIbVwwU86fJOexlHe3mIylhIJf33ifWXQ0tieUo5eswIUyJYzqRn65hXBzOEbwy8sYl//zww7ggHK9j+RxkVEX+/LFjjHqfb1vxrknp6omvRKhtHBndznSpKIjUEK2l5ReCJdzDhKxtulpn1eWqLDIsfqNsCTV+d6pLurWMFRllkjjNsnKljxGoHZxZgbXb64gZL3glC8Godpypq3J6JT3jgpem091cCRgNrrPueY8tZViX9ju0Gdm4EggcnYLQCTf2yOqqPbI0KH2RsPEjUfPbEVQv3+h4cghfhf3OiBf/gtARQ3tsadseX85WuecQyhf+E/rzl9CbEMREoN+WdyCfPBY9SY8LgNBX1aJmyWrU/nezz/cGWqAt+J4ZiF35it2lSLp9/lYXujCq346ifNFraM46D19EMmwwYtcvgXzMcLgKlwrAiHLHHlT9YyW06b5hpEVJ8Yhe/ixC5k2Hq3GLAIzUf74Dte9+DO3xs16nmqggjWqiIp9+CEF33AZBCL/p1py+rjsFYES9/wRq13wB5ddpaNV4NudMDU8lmeHPL3CpqrF5fU8IwAgZaw2zE7UbvuJWnzPUO55fricgwyqfOg6K2ydztToCafema+6R7+JJAZjSUsmEkZkH5fafoWbCaM7MR6uyiVsQzSmEAghCgyGKi0XQzImQ3XYz5KOGucSj6Q5eI4DO0KSmZCt0FTXMeGdBd74IhiY19KWVaCmtgL68BqBSehoPicQQxUZA1DcagshwCCPCIB7YF5KhgyEZkgDp4EQI5N65NuX/ASkFQrWDeHCjAAAAAElFTkSuQmCC" alt=""></span>
@@ -1664,15 +1664,14 @@ section.alerts {
   var fromSel = { value: state.from };
   var toSel = { value: state.to };
 
-  function recompute() {
-    state.from = fromSel.value;
-    state.to = toSel.value;
-    var raw = document.getElementById("fromAmount").value.replace(/\./g, "").replace(",", ".");
+  function parseAmount(id) {
+    var raw = document.getElementById(id).value.replace(/\./g, "").replace(",", ".");
     var amount = parseFloat(raw);
     if (isNaN(amount) || amount < 0) amount = 0;
-    var result = convert(amount, state.from, state.to);
-    document.getElementById("toAmount").textContent = fmt(result, state.to);
-    document.getElementById("usdAmount").textContent = fmt(toUSD(amount, state.from), "USD");
+    return amount;
+  }
+
+  function refreshRateAndHero() {
     var rate = convert(1, state.from, state.to);
     document.getElementById("rateLine").innerHTML =
       "1 " + state.from + " = <span class=\"rate-value-strong\">" + fmtRate(rate) + " " + state.to + "</span>";
@@ -1685,10 +1684,30 @@ section.alerts {
     if (heroKicker) heroKicker.textContent = "Cotiza " + state.from + " a " + state.to + " al tipo de cambio real";
   }
 
+  function recompute() {
+    state.from = fromSel.value;
+    state.to = toSel.value;
+    var amount = parseAmount("fromAmount");
+    var result = convert(amount, state.from, state.to);
+    document.getElementById("toAmount").textContent = fmt(result, state.to);
+    document.getElementById("usdAmount").value = fmt(toUSD(amount, state.from), "USD");
+    refreshRateAndHero();
+  }
+
+  function recomputeFromUsd() {
+    state.from = fromSel.value;
+    state.to = toSel.value;
+    var usdAmount = parseAmount("usdAmount");
+    document.getElementById("fromAmount").value = fmt(fromUSD(usdAmount, state.from), state.from);
+    document.getElementById("toAmount").textContent = fmt(fromUSD(usdAmount, state.to), state.to);
+    refreshRateAndHero();
+  }
+
   var fromPicker = buildPicker("fromPicker", fromSel, recompute, ORDER_NO_USD);
   var toPicker = buildPicker("toPicker", toSel, recompute, ORDER_NO_USD);
 
   document.getElementById("fromAmount").addEventListener("input", recompute);
+  document.getElementById("usdAmount").addEventListener("input", recomputeFromUsd);
 
   document.getElementById("swapBtn").addEventListener("click", function () {
     this.classList.toggle("spun");
