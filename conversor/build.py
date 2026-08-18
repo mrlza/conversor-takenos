@@ -10,6 +10,7 @@ sg = open(f"{SCRATCH}/space-grotesk.woff2.b64").read().strip()
 logo_svg = open(f"{SCRATCH}/logo-white-clean.svg").read().strip()
 logo_black_svg = open(f"{SCRATCH}/logo-brand-violet.svg").read().strip()
 flag_stack_b64 = open(f"{SCRATCH}/flag-stack-full2.png.b64").read().strip()
+footer_pattern_b64 = open(f"{SCRATCH}/footer-pattern-fade.png.b64").read().strip()
 
 CURRENCIES = {
     "ARS": {"buy": 1586.6, "sell": 1555.12, "name": "Peso argentino", "decimals": 2},
@@ -137,6 +138,8 @@ html = r"""<!doctype html>
   }
   :root:not([data-theme="light"]) .site-nav-logo .logo-light { display: none; }
   :root:not([data-theme="light"]) .site-nav-logo .logo-dark { display: block; }
+  :root:not([data-theme="light"]) .footer-logo .logo-light { display: none; }
+  :root:not([data-theme="light"]) .footer-logo .logo-dark { display: block; }
 }
 
 :root[data-theme="dark"] {
@@ -164,6 +167,8 @@ html = r"""<!doctype html>
 
 :root[data-theme="dark"] .site-nav-logo .logo-light { display: none; }
 :root[data-theme="dark"] .site-nav-logo .logo-dark { display: block; }
+:root[data-theme="dark"] .footer-logo .logo-light { display: none; }
+:root[data-theme="dark"] .footer-logo .logo-dark { display: block; }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
@@ -510,20 +515,6 @@ h1 {
   gap: 12px;
 }
 
-.no-fees-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 11.7px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--accent-strong);
-}
-
-.no-fees-badge svg { flex-shrink: 0; color: var(--accent); }
-
 .rate-row-label {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -543,6 +534,29 @@ h1 {
   color: var(--text-muted);
   white-space: nowrap;
   text-align: right;
+}
+
+.rate-row-primary {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3.3px;
+}
+
+.rate-row-primary .rate-value {
+  font-size: 13.3px;
+  color: var(--text);
+  text-align: left;
+  white-space: normal;
+}
+
+.rate-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  color: var(--text-faint);
 }
 
 .rate-value-strong { color: var(--accent-strong); }
@@ -801,39 +815,331 @@ section.history {
   margin: 6px 2px 0;
 }
 
-footer {
+/* ---- rate alerts ---- */
+section.alerts {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+}
+
+.alerts-card {
+  background: var(--surface);
+  border-radius: 16.7px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.alerts-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6.7px;
   text-align: center;
-  padding-top: 8px;
 }
 
-.claim {
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--accent);
+.alerts-title {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 23.3px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
-.disclaimer {
-  font-weight: 400;
-  font-size: 12px;
-  color: var(--text-faint);
-  max-width: 52ch;
+.alerts-title .accent-line { display: block; color: var(--accent-strong); }
+
+.alerts-sub {
+  margin: 0 auto;
+  max-width: 46ch;
+  color: var(--text-muted);
+  font-size: 12.5px;
 }
 
-.cta {
+.alerts-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16.7px;
+  border-top: 1px solid var(--border);
+}
+
+.alerts-row-column { flex-direction: column; align-items: stretch; }
+
+.alerts-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.alerts-row-text { display: flex; flex-direction: column; gap: 3.3px; }
+
+.alerts-row-label {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
-  font-size: 14px;
-  color: var(--accent);
-  text-decoration: none;
-  border-bottom: 1px solid var(--accent-soft);
-  padding-bottom: 1px;
+  font-size: 13.3px;
+  color: var(--text);
 }
 
-.cta:hover { color: var(--accent-strong); border-color: var(--accent); }
+.alerts-row-desc {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.toggle {
+  width: 36.7px;
+  height: 21.7px;
+  border-radius: 999px;
+  border: none;
+  background: var(--border-strong);
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease;
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 1.7px;
+  left: 1.7px;
+  width: 18.3px;
+  height: 18.3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.toggle[aria-checked="true"] { background: var(--accent); }
+.toggle[aria-checked="true"] .toggle-knob { transform: translateX(15px); }
+.toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.alerts-threshold {
+  display: flex;
+  align-items: center;
+  gap: 8.3px;
+  flex-wrap: wrap;
+  margin-top: 13.3px;
+}
+
+.alerts-amount {
+  display: flex;
+  align-items: center;
+  gap: 6.7px;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 11.7px;
+  padding: 8.3px 10px;
+  flex: 1;
+  min-width: 116.7px;
+}
+
+.alerts-amount .amt-fixed {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--text);
+}
+
+.alerts-amount input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--text);
+}
+
+.alerts-direction {
+  flex: 1;
+  min-width: 108.3px;
+}
+
+.alerts-direction .picker-btn {
+  width: 100%;
+  justify-content: space-between;
+  border-radius: 11.7px;
+  padding: 8.3px 10px;
+}
+
+.alerts-direction .picker-panel { width: 150px; }
+.alerts-direction .dir-icon { flex-shrink: 0; }
+
+.alerts-email { display: flex; flex-direction: column; gap: 6.7px; margin-top: 3.3px; }
+
+.alerts-email-input {
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 11.7px;
+  padding: 11.7px 13.3px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  color: var(--text);
+  outline: none;
+}
+
+.alerts-email-input::placeholder { color: var(--text-faint); }
+.alerts-email-input:focus { border-color: var(--accent); }
+
+.alerts-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46.7px;
+  border: none;
+  border-radius: 13.3px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13.3px;
+  cursor: pointer;
+  margin-top: 3.3px;
+}
+
+.alerts-submit:hover { background: var(--accent-strong); }
+
+.alerts-note {
+  margin: 0;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 11.7px;
+  color: var(--accent-strong);
+}
+
+@media (max-width: 560px) {
+  .alerts-card { padding: 20px; }
+  .alerts-threshold { flex-direction: column; align-items: stretch; }
+  .alerts-amount, .alerts-direction { min-width: 0; }
+}
+
+.rates-disclaimer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-faint);
+  max-width: 52ch;
+  margin: 0 auto;
+}
+
+.site-footer {
+  position: relative;
+  padding: 33.3px 0 105.3px;
+  margin-bottom: -72px;
+}
+
+.footer-bg {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.footer-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url(data:image/png;base64,__FOOTER_PATTERN__);
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: bottom center;
+}
+
+.footer-card {
+  position: relative;
+  z-index: 1;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 33.3px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 26.7px;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 33.3px;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  flex: 1 1 200px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 13.3px;
+}
+
+.footer-logo { display: block; width: fit-content; }
+.footer-logo svg { display: block; width: 112px; height: auto; }
+.footer-logo .logo-dark { display: none; }
+
+.footer-legal {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-faint);
+  max-width: 32ch;
+}
+
+.footer-email {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 11.7px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer-email:hover { color: var(--accent-strong); }
+
+.footer-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12.5px;
+}
+
+.footer-links-col a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer-links-col a:hover { text-decoration: underline; }
+.footer-links-col a.current { text-decoration: underline; }
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 16.7px;
+}
+
+.footer-social a {
+  display: flex;
+  color: var(--text-faint);
+}
+
+.footer-social a:hover { color: var(--accent); }
+.footer-social svg { width: 18.3px; height: 18.3px; }
+
+@media (max-width: 480px) {
+  .site-footer { padding: 16.7px 0 72.7px; margin-bottom: -56px; }
+  .footer-card { padding: 24px; }
+}
 
 @media (max-width: 480px) {
   .wrap { padding: 24px 20px 56px; }
@@ -847,6 +1153,13 @@ footer {
   top: 13.3px;
   z-index: 50;
   padding: 0 13.3px;
+  transition: transform 0.25s ease;
+}
+
+.site-nav.nav-hidden { transform: translateY(-100px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav { transition: none; }
 }
 
 .site-nav-inner {
@@ -854,14 +1167,15 @@ footer {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 35px;
   flex-wrap: wrap;
   padding: 8.3px 8.3px 8.3px 18.3px;
   background: var(--surface);
   border-radius: 18.3px;
   box-shadow: 0 0.5px 0.5px -1px rgba(0, 0, 0, 0.18), 0 1.9px 1.9px -2px rgba(0, 0, 0, 0.16), 0 8px 8px -3px rgba(0, 0, 0, 0.06);
 }
+
+.site-nav-actions { margin-left: auto; }
 
 .site-nav-logo { display: flex; align-items: center; }
 .site-nav-logo svg { display: block; width: 112px; height: auto; }
@@ -917,6 +1231,7 @@ footer {
   color: var(--nav-link);
   cursor: pointer;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .nav-hamburger svg { width: 22px; height: 22px; }
@@ -1023,6 +1338,27 @@ footer {
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeMobilePanel();
   });
+
+  var siteNav = document.querySelector(".site-nav");
+  var lastScrollY = window.scrollY;
+  var ticking = false;
+  function onScroll() {
+    var y = window.scrollY;
+    if (y > lastScrollY && y > 80) {
+      siteNav.classList.add("nav-hidden");
+      closeMobilePanel();
+    } else if (y < lastScrollY) {
+      siteNav.classList.remove("nav-hidden");
+    }
+    lastScrollY = y;
+    ticking = false;
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) {
+      requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
 })();
 </script>
 
@@ -1038,7 +1374,7 @@ footer {
     <div class="card hero-card" id="calculator">
       <div class="field">
         <div class="field-labels">
-          <span class="field-label">Enviás</span>
+          <span class="field-label">Cantidad</span>
           <input class="amount-input" id="fromAmount" inputmode="decimal" autocomplete="off" value="100" aria-label="Monto a convertir">
         </div>
         <div class="currency-picker" id="fromPicker"></div>
@@ -1057,24 +1393,20 @@ footer {
 
       <div class="field">
         <div class="field-labels">
-          <span class="field-label">Recibís (estimado)</span>
+          <span class="field-label">Convertido a</span>
           <output class="amount-input" id="toAmount" aria-live="polite">0</output>
         </div>
         <div class="currency-picker" id="toPicker"></div>
       </div>
 
       <div class="rate-breakdown">
-        <div class="rate-row">
-          <span class="rate-row-label">Tasa de cambio<span class="info-dot" aria-hidden="true">i</span></span>
+        <div class="rate-row rate-row-primary">
           <span class="rate-value" id="rateLine">1 USD = 1 USD</span>
+          <span class="rate-caption">Tipo de cambio medio del mercado a las __ASOF_TIME__<span class="info-dot" aria-hidden="true">i</span></span>
         </div>
         <div class="rate-row">
-          <span class="no-fees-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Sin comisiones
-          </span>
+          <span class="rate-row-label">Comisiones<span class="info-dot" aria-hidden="true">i</span></span>
+          <span class="rate-value">Según método de pago</span>
         </div>
       </div>
 
@@ -1116,11 +1448,101 @@ footer {
     </div>
   </section>
 
-  <footer>
-    <p class="claim">La billetera que conecta LATAM con el mundo.</p>
-    <p class="disclaimer">Tasas de referencia de Takenos, no incluyen comisiones de terceros ni de medios de pago.</p>
-    <p class="disclaimer">Takenos es un proveedor de servicios de activos virtuales (en adelante, &ldquo;PSAV&rdquo;) debidamente inscrito bajo el N&deg;54 en el Registro de PSAV de la Comisión Nacional de Valores (República Argentina).</p>
-    <a class="cta" href="https://takenos.com" target="_blank" rel="noopener">Recibí pagos del exterior y guardalos en USD digitales, en takenos.com &rarr;</a>
+  <section class="alerts">
+    <div class="alerts-card">
+      <div class="alerts-head">
+        <h2 class="alerts-title"><span class="accent-line">Mantené un ojo</span>en el mercado, sin esfuerzo</h2>
+        <p class="alerts-sub">Suscribite para recibir alertas de tipo de cambio directo en tu correo y no te pierdas ninguna novedad.</p>
+      </div>
+
+      <div class="alerts-row">
+        <div class="alerts-row-text">
+          <span class="alerts-row-label">Notificaciones diarias</span>
+          <span class="alerts-row-desc">Quiero recibir un resumen diario en mi correo</span>
+        </div>
+        <button class="toggle" id="toggleDaily" type="button" role="switch" aria-checked="false" aria-label="Activar notificaciones diarias">
+          <span class="toggle-knob"></span>
+        </button>
+      </div>
+
+      <div class="alerts-row alerts-row-column">
+        <div class="alerts-row-top">
+          <div class="alerts-row-text">
+            <span class="alerts-row-label">Notificarme cuando</span>
+            <span class="alerts-row-desc">Te avisamos apenas el tipo de cambio cruce ese valor</span>
+          </div>
+          <button class="toggle" id="toggleThreshold" type="button" role="switch" aria-checked="false" aria-label="Activar alerta de tipo de cambio">
+            <span class="toggle-knob"></span>
+          </button>
+        </div>
+        <div class="alerts-threshold">
+          <div class="alerts-amount">
+            <span class="amt-fixed">1</span>
+            <div class="currency-picker" id="alertFromPicker"></div>
+          </div>
+          <div class="currency-picker alerts-direction" id="alertDirectionWrap"></div>
+          <div class="alerts-amount">
+            <input id="alertThresholdValue" inputmode="decimal" autocomplete="off" value="1.487,75" aria-label="Valor umbral">
+            <div class="currency-picker" id="alertToPicker"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alerts-email">
+        <label class="alerts-row-label" for="alertEmail">Tu dirección de correo electrónico</label>
+        <input class="alerts-email-input" id="alertEmail" type="email" placeholder="Correo electrónico..." autocomplete="email">
+      </div>
+
+      <button class="alerts-submit" id="alertsSubmit" type="button">Recibir alertas de tipo de cambio</button>
+      <p class="alerts-note" id="alertsNote" hidden>&iexcl;Listo! Te avisaremos por correo.</p>
+    </div>
+  </section>
+
+  <p class="rates-disclaimer">Tasas de referencia de Takenos, no incluyen comisiones de terceros ni de medios de pago.</p>
+
+  <footer class="site-footer">
+    <div class="footer-bg" aria-hidden="true"></div>
+    <div class="footer-card">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="footer-logo" href="https://takenos.com" target="_blank" rel="noopener" aria-label="Takenos">
+            <span class="logo-light">__LOGO_BLACK_SVG__</span>
+            <span class="logo-dark">__LOGO_SVG__</span>
+          </a>
+          <p class="footer-legal">Global Flow S.A.U, CUIT: 30-71825754-5., es un proveedor de servicios de activos virtuales (en adelante, &ldquo;PSAV&rdquo;) debidamente inscrito bajo el N&deg;54 en el Registro de PSAV de la Comisión Nacional de Valores (República Argentina).</p>
+          <a class="footer-email" href="mailto:support@takenos.com">support@takenos.com</a>
+        </div>
+        <nav class="footer-links-col">
+          <a class="current" href="https://takenos.com" target="_blank" rel="noopener">Inicio</a>
+          <a href="https://takenos.com/blog" target="_blank" rel="noopener">Blog</a>
+          <a href="https://takenos.com/notas-medios" target="_blank" rel="noopener">En los Medios</a>
+          <a href="https://takenos.com/business" target="_blank" rel="noopener">Cuenta empresa</a>
+          <a href="https://takenos.com/inversiones" target="_blank" rel="noopener">Inversiones</a>
+          <a href="https://takenos.com/tarjeta-internacional" target="_blank" rel="noopener">Tarjeta internacional</a>
+        </nav>
+        <nav class="footer-links-col">
+          <a href="https://takenos.com/promociones" target="_blank" rel="noopener">Promociones</a>
+          <a href="https://help.takenos.com/en/" target="_blank" rel="noopener">Preguntas frecuentes</a>
+          <a href="https://takenos.peopleforce.io/careers" target="_blank" rel="noopener">Súmate al equipo</a>
+          <a href="https://help.takenos.com/en/articles/11403392-terminos-y-condiciones" target="_blank" rel="noopener">Términos y condiciones</a>
+          <a href="https://help.takenos.com/en/articles/11403396-politicas-de-privacidad" target="_blank" rel="noopener">Políticas de privacidad</a>
+        </nav>
+      </div>
+      <div class="footer-social">
+        <a href="https://x.com/TakenosApp" target="_blank" rel="noopener" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" stroke-linecap="round"/></svg>
+        </a>
+        <a href="https://www.instagram.com/takenosapp" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@takenos_app" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 3v10.5a3.5 3.5 0 1 1-3.5-3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 3c0 3 2.5 5 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/takenos/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5v6M8 7.8v.1M12.5 16.5v-3.7c0-1.1.7-1.9 2-1.9 1.2 0 1.8.8 1.8 1.9v3.7M12.5 12.3v4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
   </footer>
 </div>
 
@@ -1487,6 +1909,109 @@ footer {
   renderCurrencyToggle();
   renderRangeTabs();
   renderChart();
+
+  function initToggle(id) {
+    var btn = document.getElementById(id);
+    btn.addEventListener("click", function () {
+      var checked = btn.getAttribute("aria-checked") === "true";
+      btn.setAttribute("aria-checked", checked ? "false" : "true");
+    });
+  }
+  initToggle("toggleDaily");
+  initToggle("toggleThreshold");
+
+  var alertFromSel = { value: "USD" };
+  var alertToSel = { value: "ARS" };
+  buildPicker("alertFromPicker", alertFromSel, function () {});
+  buildPicker("alertToPicker", alertToSel, function () {});
+
+  function buildDirectionPicker(containerId, selected, onChange) {
+    var container = document.getElementById(containerId);
+    var options = [
+      { value: "down", label: "Baje de", color: "var(--aji)", icon: '<path d="M2.25 6L9 12.75l4.306-4.306a11.95 11.95 0 0 1 5.814 5.518l2.74 1.22m0 0l-5.94 2.28m5.94-2.28l-2.28-5.94" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' },
+      { value: "up", label: "Suba de", color: "var(--accent)", icon: '<path d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.94" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' }
+    ];
+    function optionByValue(v) { return options.filter(function (o) { return o.value === v; })[0]; }
+
+    var btn = document.createElement("button");
+    btn.className = "picker-btn";
+    btn.type = "button";
+    btn.setAttribute("aria-haspopup", "listbox");
+    btn.setAttribute("aria-expanded", "false");
+
+    var panel = document.createElement("div");
+    panel.className = "picker-panel";
+    panel.setAttribute("role", "listbox");
+
+    function dirIcon(opt) {
+      return '<svg class="dir-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:' + opt.color + '" aria-hidden="true">' + opt.icon + '</svg>';
+    }
+    function renderBtn() {
+      var opt = optionByValue(selected.value);
+      btn.innerHTML =
+        dirIcon(opt) + '<span>' + opt.label + '</span>' +
+        '<svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+        '<path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+    function renderPanel() {
+      panel.innerHTML = "";
+      options.forEach(function (opt) {
+        var row = document.createElement("button");
+        row.type = "button";
+        row.className = "picker-row";
+        row.setAttribute("role", "option");
+        row.setAttribute("aria-selected", opt.value === selected.value ? "true" : "false");
+        row.innerHTML = dirIcon(opt) + '<span class="name">' + opt.label + '</span>';
+        row.addEventListener("click", function () {
+          selected.value = opt.value;
+          renderBtn();
+          renderPanel();
+          closePanel();
+          onChange();
+        });
+        panel.appendChild(row);
+      });
+    }
+    function openPanel() {
+      panel.classList.add("open");
+      btn.setAttribute("aria-expanded", "true");
+      document.addEventListener("click", outsideClick, true);
+    }
+    function closePanel() {
+      panel.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+      document.removeEventListener("click", outsideClick, true);
+    }
+    function outsideClick(e) {
+      if (!container.contains(e.target)) closePanel();
+    }
+    btn.addEventListener("click", function () {
+      panel.classList.contains("open") ? closePanel() : openPanel();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closePanel();
+    });
+
+    renderBtn();
+    renderPanel();
+    container.appendChild(btn);
+    container.appendChild(panel);
+    return { refresh: function () { renderBtn(); renderPanel(); } };
+  }
+
+  var alertDirectionSel = { value: "down" };
+  buildDirectionPicker("alertDirectionWrap", alertDirectionSel, function () {});
+
+  var alertsSubmit = document.getElementById("alertsSubmit");
+  var alertsNote = document.getElementById("alertsNote");
+  var alertEmail = document.getElementById("alertEmail");
+  alertsSubmit.addEventListener("click", function () {
+    if (!alertEmail.value || !alertEmail.checkValidity()) {
+      alertEmail.focus();
+      return;
+    }
+    alertsNote.hidden = false;
+  });
 })();
 </script>
 """
@@ -1524,10 +2049,12 @@ html = html.replace("__SG__", sg)
 html = html.replace("__LOGO_SVG__", logo_svg)
 html = html.replace("__LOGO_BLACK_SVG__", logo_black_svg)
 html = html.replace("__FLAG_STACK__", flag_stack_b64)
+html = html.replace("__FOOTER_PATTERN__", footer_pattern_b64)
 html = html.replace("__RATES_JSON__", rates_json)
 html = html.replace("__FLAGS_JSON__", flags_json)
 html = html.replace("__HISTORY_JSON__", history_json)
 html = html.replace("__ASOF__", "14 ago 2026")
+html = html.replace("__ASOF_TIME__", "16:20")
 
 open(OUT_DIR / "conversor-takenos.html", "w").write(html)
 print("bytes:", len(html.encode()))
