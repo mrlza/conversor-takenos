@@ -1739,6 +1739,42 @@ section.alerts {
 
   recompute();
 
+  // Cotización ARS en vivo: pega a un Web App de Apps Script que hace de
+  // proxy (server-side, sin problema de CORS) hacia la cotización USDT de
+  // Takenos en https://api.dolarito.ar. Si LIVE_RATE_URL está vacío o el
+  // fetch falla, se queda silenciosamente con el snapshot estático de RATES.
+  var LIVE_RATE_URL = "https://script.google.com/macros/s/AKfycbzpmnfHUwHx41tOTs4fo6AeJuIgSXfCa0fK3mZzmCQ7b4lKW4kCY9vk5D9KRJYm6VmNqA/exec";
+  var LIVE_REFRESH_MS = 5 * 60 * 1000;
+
+  function applyLiveArsRate(data) {
+    if (!data || typeof data.buy !== "number" || typeof data.sell !== "number") return;
+    RATES.ARS.buy = data.buy;
+    RATES.ARS.sell = data.sell;
+    var card = cotizScroll.querySelector('.cotiz-card[data-code="ARS"]');
+    if (card) {
+      var values = card.querySelectorAll(".cotiz-value");
+      if (values[0]) values[0].textContent = fmt(data.buy, "ARS");
+      if (values[1]) values[1].textContent = fmt(data.sell, "ARS");
+    }
+    var asOf = document.getElementById("asOf");
+    if (asOf) {
+      asOf.textContent = "ARS en vivo · actualizado " +
+        new Date().toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+    }
+    recompute();
+  }
+
+  function fetchLiveArsRate() {
+    if (!LIVE_RATE_URL) return;
+    fetch(LIVE_RATE_URL)
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(applyLiveArsRate)
+      .catch(function () { /* sin conexión al proxy: se mantiene el snapshot estático */ });
+  }
+
+  fetchLiveArsRate();
+  setInterval(fetchLiveArsRate, LIVE_REFRESH_MS);
+
   var HISTORY = {"ARS": [{"d": "2026-07-30", "buy": 1541.87, "sell": 1582.57}, {"d": "2026-07-31", "buy": 1547.3936, "sell": 1588.2391}, {"d": "2026-08-01", "buy": 1551.37, "sell": 1592.32}, {"d": "2026-08-02", "buy": 1551.37, "sell": 1592.32}, {"d": "2026-08-03", "buy": 1554.9038, "sell": 1595.9525}, {"d": "2026-08-04", "buy": 1553.9522, "sell": 1594.9689}, {"d": "2026-08-05", "buy": 1551.3893, "sell": 1592.3414}, {"d": "2026-08-06", "buy": 1555.7019, "sell": 1587.3586}, {"d": "2026-08-07", "buy": 1556.0399, "sell": 1587.5379}, {"d": "2026-08-08", "buy": 1554.73, "sell": 1586.2}, {"d": "2026-08-09", "buy": 1554.73, "sell": 1586.2}, {"d": "2026-08-10", "buy": 1560.0274, "sell": 1591.6057}, {"d": "2026-08-11", "buy": 1562.3809, "sell": 1594.0104}, {"d": "2026-08-12", "buy": 1565.6468, "sell": 1597.3412}, {"d": "2026-08-13", "buy": 1566.1751, "sell": 1597.8798}, {"d": "2026-08-14", "buy": 1555.9207, "sell": 1587.4173}, {"d": "2026-08-15", "buy": 1555.12, "sell": 1586.6}], "BOB": [{"d": "2026-07-01", "buy": 9.8876, "sell": 10.2679}, {"d": "2026-07-02", "buy": 9.8579, "sell": 10.2282}, {"d": "2026-07-03", "buy": 9.8625, "sell": 10.2354}, {"d": "2026-07-04", "buy": 9.8864, "sell": 10.259}, {"d": "2026-07-05", "buy": 9.8736, "sell": 10.2534}, {"d": "2026-07-06", "buy": 9.8885, "sell": 10.262}, {"d": "2026-07-07", "buy": 9.8951, "sell": 10.2705}, {"d": "2026-07-08", "buy": 10.1495, "sell": 10.5391}, {"d": "2026-07-09", "buy": 10.3232, "sell": 10.7164}, {"d": "2026-07-10", "buy": 10.4445, "sell": 10.8445}, {"d": "2026-07-11", "buy": 10.4338, "sell": 10.8428}, {"d": "2026-07-12", "buy": 10.3158, "sell": 10.7113}, {"d": "2026-07-13", "buy": 10.3818, "sell": 10.7693}, {"d": "2026-07-14", "buy": 10.4061, "sell": 10.8009}, {"d": "2026-07-15", "buy": 10.5318, "sell": 10.9451}, {"d": "2026-07-16", "buy": 10.5826, "sell": 10.8646}, {"d": "2026-07-17", "buy": 10.6029, "sell": 10.8}, {"d": "2026-07-18", "buy": 10.6376, "sell": 10.8475}, {"d": "2026-07-19", "buy": 10.6469, "sell": 10.9054}, {"d": "2026-07-20", "buy": 10.6788, "sell": 11.0313}, {"d": "2026-07-21", "buy": 11.0311, "sell": 11.3875}, {"d": "2026-07-22", "buy": 11.2365, "sell": 11.6207}, {"d": "2026-07-23", "buy": 11.5005, "sell": 11.8898}, {"d": "2026-07-24", "buy": 11.6268, "sell": 12.0083}, {"d": "2026-07-25", "buy": 11.6582, "sell": 12.038}, {"d": "2026-07-26", "buy": 11.4345, "sell": 11.8177}, {"d": "2026-07-27", "buy": 11.5533, "sell": 11.934}, {"d": "2026-07-28", "buy": 11.484, "sell": 11.8626}, {"d": "2026-07-29", "buy": 11.7889, "sell": 12.1727}, {"d": "2026-07-30", "buy": 11.7497, "sell": 12.1329}, {"d": "2026-07-31", "buy": 11.8562, "sell": 12.24}, {"d": "2026-08-01", "buy": 11.583, "sell": 11.9646}, {"d": "2026-08-02", "buy": 11.5533, "sell": 11.9391}, {"d": "2026-08-03", "buy": 11.7202, "sell": 12.0957}, {"d": "2026-08-04", "buy": 11.6498, "sell": 12.0207}, {"d": "2026-08-05", "buy": 11.4889, "sell": 11.8575}, {"d": "2026-08-06", "buy": 11.1652, "sell": 11.5423}, {"d": "2026-08-07", "buy": 11.0286, "sell": 11.4113}, {"d": "2026-08-08", "buy": 11.0319, "sell": 11.3798}, {"d": "2026-08-09", "buy": 11.0385, "sell": 11.3934}, {"d": "2026-08-10", "buy": 11.2299, "sell": 11.6008}, {"d": "2026-08-11", "buy": 11.3974, "sell": 11.7683}, {"d": "2026-08-12", "buy": 11.3982, "sell": 11.7697}, {"d": "2026-08-13", "buy": 11.3969, "sell": 11.7667}, {"d": "2026-08-14", "buy": 11.3588, "sell": 11.7307}, {"d": "2026-08-15", "buy": 11.3244, "sell": 11.6951}]};
   var RANGES = [
     { key: "6m", label: "6 meses", days: 180 },

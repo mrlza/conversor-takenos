@@ -6,6 +6,11 @@ HERE = Path(__file__).resolve().parent
 SCRATCH = str(HERE / "assets")
 OUT_DIR = HERE
 
+# URL del Web App de Apps Script que hace de proxy CORS hacia la cotización
+# USDT/Takenos de la API de Dolarito (ver conversor/apps-script/live-rate-proxy.gs).
+# Si queda vacío, el HTML generado usa únicamente el snapshot estático de CURRENCIES.
+LIVE_RATE_URL = "https://script.google.com/macros/s/AKfycbzpmnfHUwHx41tOTs4fo6AeJuIgSXfCa0fK3mZzmCQ7b4lKW4kCY9vk5D9KRJYm6VmNqA/exec"
+
 sg = open(f"{SCRATCH}/space-grotesk.woff2.b64").read().strip()
 logo_svg = open(f"{SCRATCH}/logo-white-clean.svg").read().strip()
 logo_black_svg = open(f"{SCRATCH}/logo-brand-violet.svg").read().strip()
@@ -1773,6 +1778,42 @@ section.alerts {
 
   recompute();
 
+  // Cotización ARS en vivo: pega a un Web App de Apps Script que hace de
+  // proxy (server-side, sin problema de CORS) hacia la cotización USDT de
+  // Takenos en https://api.dolarito.ar. Si LIVE_RATE_URL está vacío o el
+  // fetch falla, se queda silenciosamente con el snapshot estático de RATES.
+  var LIVE_RATE_URL = "__LIVE_RATE_URL__";
+  var LIVE_REFRESH_MS = 5 * 60 * 1000;
+
+  function applyLiveArsRate(data) {
+    if (!data || typeof data.buy !== "number" || typeof data.sell !== "number") return;
+    RATES.ARS.buy = data.buy;
+    RATES.ARS.sell = data.sell;
+    var card = cotizScroll.querySelector('.cotiz-card[data-code="ARS"]');
+    if (card) {
+      var values = card.querySelectorAll(".cotiz-value");
+      if (values[0]) values[0].textContent = fmt(data.buy, "ARS");
+      if (values[1]) values[1].textContent = fmt(data.sell, "ARS");
+    }
+    var asOf = document.getElementById("asOf");
+    if (asOf) {
+      asOf.textContent = "ARS en vivo · actualizado " +
+        new Date().toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+    }
+    recompute();
+  }
+
+  function fetchLiveArsRate() {
+    if (!LIVE_RATE_URL) return;
+    fetch(LIVE_RATE_URL)
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(applyLiveArsRate)
+      .catch(function () { /* sin conexión al proxy: se mantiene el snapshot estático */ });
+  }
+
+  fetchLiveArsRate();
+  setInterval(fetchLiveArsRate, LIVE_REFRESH_MS);
+
   var HISTORY = __HISTORY_JSON__;
   var RANGES = [
     { key: "6m", label: "6 meses", days: 180 },
@@ -2089,6 +2130,7 @@ html = html.replace("__USD_FLAG__", flags["USD"])
 html = html.replace("__HISTORY_JSON__", history_json)
 html = html.replace("__ASOF__", "14 ago 2026")
 html = html.replace("__ASOF_TIME__", "16:20")
+html = html.replace("__LIVE_RATE_URL__", LIVE_RATE_URL)
 
 open(OUT_DIR / "conversor-takenos.html", "w").write(html)
 print("bytes:", len(html.encode()))
