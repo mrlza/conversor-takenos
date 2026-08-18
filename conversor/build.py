@@ -238,9 +238,9 @@ body {
 .hero-flags-img {
   display: block;
   width: 100%;
-  max-width: 350px;
+  max-width: 403px;
   height: auto;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .hero-card {
