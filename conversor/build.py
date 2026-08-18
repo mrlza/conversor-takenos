@@ -9,7 +9,7 @@ OUT_DIR = HERE
 sg = open(f"{SCRATCH}/space-grotesk.woff2.b64").read().strip()
 logo_svg = open(f"{SCRATCH}/logo-white-clean.svg").read().strip()
 logo_black_svg = open(f"{SCRATCH}/logo-brand-violet.svg").read().strip()
-flag_stack_b64 = open(f"{SCRATCH}/flag-stack-full2.png.b64").read().strip()
+flag_stack_b64 = open(f"{SCRATCH}/flag-stack-cropped.png.b64").read().strip()
 footer_pattern_b64 = open(f"{SCRATCH}/footer-pattern-fade.png.b64").read().strip()
 
 CURRENCIES = {
@@ -184,7 +184,7 @@ body {
 .wrap {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 32px 40px 72px;
+  padding: 24px 40px 72px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -198,41 +198,13 @@ body {
 .flat-hero {
   position: relative;
   overflow: visible;
-  padding: 12px 0 175px 0;
+  padding: 10px 0 32px 0;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 32px;
   text-align: left;
-}
-
-.hero-bleed {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.hero-flags-bg {
-  position: absolute;
-  right: -78.3px;
-  bottom: 63.4px;
-  width: 660px;
-  aspect-ratio: 3840 / 2133;
-  background-image: url(data:image/png;base64,__FLAG_STACK__);
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  background-size: contain;
-}
-
-@media (min-width: 1300px) {
-  .hero-flags-bg { width: 984px; right: -116.7px; }
 }
 
 .flat-hero-text {
@@ -243,6 +215,7 @@ body {
   gap: 10px;
   flex: 1;
   min-width: 0;
+  margin-top: 20px;
 }
 
 .hero-kicker {
@@ -257,6 +230,14 @@ body {
 
 .flat-hero .sub { margin: 0; max-width: 42ch; }
 
+.hero-flags-img {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  margin-top: 10px;
+}
+
 .hero-card {
   position: relative;
   z-index: 1;
@@ -268,7 +249,6 @@ body {
 @media (max-width: 900px) {
   .flat-hero { flex-direction: column; align-items: stretch; padding-top: 60px; margin-left: 0; }
   .hero-card { flex: 1 1 auto; width: 100%; align-self: stretch; }
-  .hero-bleed { display: none; }
 }
 
 @media (max-width: 560px) {
@@ -385,6 +365,22 @@ h1 {
   color: var(--text);
 }
 
+.fixed-currency-badge {
+  display: flex;
+  align-items: center;
+  gap: 6.7px;
+  flex-shrink: 0;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 5px 12px 5px 5px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 11.7px;
+  letter-spacing: -0.15px;
+  color: var(--text);
+}
+
 .picker-btn:hover { border-color: var(--accent); }
 .picker-btn:focus-visible {
   outline: 2px solid var(--focus-ring);
@@ -476,6 +472,14 @@ h1 {
   z-index: 1;
 }
 
+.convert-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  margin: -3.3px 0;
+}
+
 .swap-btn {
   width: 40px;
   height: 40px;
@@ -557,6 +561,12 @@ h1 {
   font-weight: 500;
   font-size: 10px;
   color: var(--text-faint);
+}
+
+.calc-disclaimer {
+  display: block;
+  margin: 0;
+  line-height: 1.4;
 }
 
 .rate-value-strong { color: var(--accent-strong); }
@@ -822,6 +832,8 @@ section.alerts {
 }
 
 .alerts-card {
+  max-width: 700px;
+  margin: 0 auto;
   background: var(--surface);
   border-radius: 16.7px;
   padding: 28px;
@@ -929,6 +941,7 @@ section.alerts {
 .alerts-amount {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 6.7px;
   background: var(--card);
   border: 1px solid var(--border-strong);
@@ -946,7 +959,7 @@ section.alerts {
 }
 
 .alerts-amount input {
-  width: 100%;
+  flex: 1 1 auto;
   min-width: 0;
   border: none;
   outline: none;
@@ -1025,7 +1038,7 @@ section.alerts {
   text-align: center;
   font-size: 11px;
   color: var(--text-faint);
-  max-width: 52ch;
+  max-width: 84ch;
   margin: 0 auto;
 }
 
@@ -1364,17 +1377,17 @@ section.alerts {
 
 <div class="wrap">
   <header class="flat-hero">
-    <div class="hero-bleed" aria-hidden="true"><div class="hero-flags-bg"></div></div>
     <div class="flat-hero-text">
       <p class="hero-kicker" id="heroKicker">Cotiza USD a ARS al tipo de cambio real</p>
       <h1 id="heroTitle">Dólares americanos a Pesos argentinos</h1>
       <p class="sub">Convertí, enviá y recibí dinero directo desde la app, al tipo de cambio real y sin comisiones ocultas.</p>
+      <img class="hero-flags-img" src="data:image/png;base64,__FLAG_STACK__" alt="" aria-hidden="true">
     </div>
 
     <div class="card hero-card" id="calculator">
       <div class="field">
         <div class="field-labels">
-          <span class="field-label">Cantidad</span>
+          <span class="field-label">Recibís</span>
           <input class="amount-input" id="fromAmount" inputmode="decimal" autocomplete="off" value="100" aria-label="Monto a convertir">
         </div>
         <div class="currency-picker" id="fromPicker"></div>
@@ -1393,6 +1406,23 @@ section.alerts {
 
       <div class="field">
         <div class="field-labels">
+          <span class="field-label">Cantidad en Takenos</span>
+          <output class="amount-input" id="usdAmount" aria-live="polite">0</output>
+        </div>
+        <div class="fixed-currency-badge">
+          <span class="flag-pill"><img class="flag-icon" src="__USD_FLAG__" alt=""></span>
+          <span>USD</span>
+        </div>
+      </div>
+
+      <div class="convert-indicator" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 4v15M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="field">
+        <div class="field-labels">
           <span class="field-label">Convertido a</span>
           <output class="amount-input" id="toAmount" aria-live="polite">0</output>
         </div>
@@ -1402,12 +1432,12 @@ section.alerts {
       <div class="rate-breakdown">
         <div class="rate-row rate-row-primary">
           <span class="rate-value" id="rateLine">1 USD = 1 USD</span>
-          <span class="rate-caption">Tipo de cambio medio del mercado a las __ASOF_TIME__<span class="info-dot" aria-hidden="true">i</span></span>
         </div>
         <div class="rate-row">
           <span class="rate-row-label">Comisiones<span class="info-dot" aria-hidden="true">i</span></span>
           <span class="rate-value">Según método de pago</span>
         </div>
+        <p class="rate-caption calc-disclaimer">Tipo de cambio medio del mercado a las __ASOF_TIME__<span class="info-dot" aria-hidden="true">i</span></p>
       </div>
 
       <a class="hero-cta" href="https://takenos.com" target="_blank" rel="noopener">
@@ -1427,31 +1457,10 @@ section.alerts {
     <div class="cotiz-scroll" id="cotizScroll"></div>
   </section>
 
-  <section class="history">
-    <div class="rates-head">
-      <h2>Historial de tipo de cambio</h2>
-    </div>
-    <div class="history-top">
-      <div class="currency-toggle" id="historyCurrencyToggle"></div>
-      <span class="history-rate" id="historyRate"></span>
-    </div>
-    <div class="chart-card">
-      <div class="range-tabs" id="historyRangeTabs"></div>
-      <div class="chart-wrap" id="chartWrap">
-        <svg id="historyChart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg>
-        <div class="chart-tooltip" id="chartTooltip">
-          <div class="tt-date" id="ttDate"></div>
-          <div class="tt-value" id="ttValue"></div>
-        </div>
-      </div>
-      <p class="chart-note" id="chartNote"></p>
-    </div>
-  </section>
-
   <section class="alerts">
     <div class="alerts-card">
       <div class="alerts-head">
-        <h2 class="alerts-title"><span class="accent-line">Mantené un ojo</span>en el mercado, sin esfuerzo</h2>
+        <h2 class="alerts-title"><span class="accent-line">Estate siempre al tanto</span>de los últimos cambios</h2>
         <p class="alerts-sub">Suscribite para recibir alertas de tipo de cambio directo en tu correo y no te pierdas ninguna novedad.</p>
       </div>
 
@@ -1498,7 +1507,28 @@ section.alerts {
     </div>
   </section>
 
-  <p class="rates-disclaimer">Tasas de referencia de Takenos, no incluyen comisiones de terceros ni de medios de pago.</p>
+  <section class="history">
+    <div class="rates-head">
+      <h2>Historial de tipo de cambio</h2>
+    </div>
+    <div class="history-top">
+      <div class="currency-toggle" id="historyCurrencyToggle"></div>
+      <span class="history-rate" id="historyRate"></span>
+    </div>
+    <div class="chart-card">
+      <div class="range-tabs" id="historyRangeTabs"></div>
+      <div class="chart-wrap" id="chartWrap">
+        <svg id="historyChart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg>
+        <div class="chart-tooltip" id="chartTooltip">
+          <div class="tt-date" id="ttDate"></div>
+          <div class="tt-value" id="ttValue"></div>
+        </div>
+      </div>
+      <p class="chart-note" id="chartNote"></p>
+    </div>
+  </section>
+
+  <p class="rates-disclaimer">Tasas de referencia de Takenos, no incluyen comisiones de terceros ni de medios de pago. &middot; Este tipo de cambio aplica únicamente a depósitos y retiros, no a pagos con la TakeCard.</p>
 
   <footer class="site-footer">
     <div class="footer-bg" aria-hidden="true"></div>
@@ -1552,6 +1582,7 @@ section.alerts {
   RATES.USD = { buy: 1, sell: 1, name: "Dólar estadounidense", decimals: 2 };
   var FLAGS = __FLAGS_JSON__;
   var ORDER = ["USD", "ARS", "BRL", "MXN", "COP", "CLP", "PEN", "BOB", "PYG", "EUR", "GBP"];
+  var ORDER_NO_USD = ORDER.filter(function (c) { return c !== "USD"; });
   var PLURAL_NAMES = {
     USD: "Dólares americanos",
     ARS: "Pesos argentinos",
@@ -1566,7 +1597,7 @@ section.alerts {
     PEN: "Soles peruanos"
   };
 
-  var state = { from: "USD", to: "ARS" };
+  var state = { from: "BRL", to: "ARS" };
 
   function toUSD(amount, cur) {
     if (cur === "USD") return amount;
@@ -1592,7 +1623,8 @@ section.alerts {
     return '<span class="flag-pill"><img class="flag-icon" src="' + FLAGS[code] + '" alt=""></span>';
   }
 
-  function buildPicker(containerId, selected, onChange) {
+  function buildPicker(containerId, selected, onChange, orderList) {
+    var list = orderList || ORDER;
     var container = document.getElementById(containerId);
     var btn = document.createElement("button");
     btn.className = "picker-btn";
@@ -1613,7 +1645,7 @@ section.alerts {
 
     function renderPanel() {
       panel.innerHTML = "";
-      ORDER.forEach(function (code) {
+      list.forEach(function (code) {
         var r = RATES[code];
         var row = document.createElement("button");
         row.type = "button";
@@ -1674,6 +1706,7 @@ section.alerts {
     if (isNaN(amount) || amount < 0) amount = 0;
     var result = convert(amount, state.from, state.to);
     document.getElementById("toAmount").textContent = fmt(result, state.to);
+    document.getElementById("usdAmount").textContent = fmt(toUSD(amount, state.from), "USD");
     var rate = convert(1, state.from, state.to);
     document.getElementById("rateLine").innerHTML =
       "1 " + state.from + " = <span class=\"rate-value-strong\">" + fmtRate(rate) + " " + state.to + "</span>";
@@ -1686,8 +1719,8 @@ section.alerts {
     if (heroKicker) heroKicker.textContent = "Cotiza " + state.from + " a " + state.to + " al tipo de cambio real";
   }
 
-  var fromPicker = buildPicker("fromPicker", fromSel, recompute);
-  var toPicker = buildPicker("toPicker", toSel, recompute);
+  var fromPicker = buildPicker("fromPicker", fromSel, recompute, ORDER_NO_USD);
+  var toPicker = buildPicker("toPicker", toSel, recompute, ORDER_NO_USD);
 
   document.getElementById("fromAmount").addEventListener("input", recompute);
 
@@ -1702,7 +1735,7 @@ section.alerts {
   });
 
   var cotizScroll = document.getElementById("cotizScroll");
-  ORDER.filter(function (c) { return c !== "USD"; }).forEach(function (code) {
+  ORDER_NO_USD.forEach(function (code) {
     var r = RATES[code];
     var card = document.createElement("div");
     card.className = "cotiz-card";
@@ -2052,6 +2085,7 @@ html = html.replace("__FLAG_STACK__", flag_stack_b64)
 html = html.replace("__FOOTER_PATTERN__", footer_pattern_b64)
 html = html.replace("__RATES_JSON__", rates_json)
 html = html.replace("__FLAGS_JSON__", flags_json)
+html = html.replace("__USD_FLAG__", flags["USD"])
 html = html.replace("__HISTORY_JSON__", history_json)
 html = html.replace("__ASOF__", "14 ago 2026")
 html = html.replace("__ASOF_TIME__", "16:20")
