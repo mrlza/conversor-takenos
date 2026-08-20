@@ -257,7 +257,8 @@ body {
 }
 
 @media (max-width: 560px) {
-  .flat-hero { padding: 28px 24px 26px; }
+  .wrap { padding: 24px 20px 56px; }
+  .flat-hero { padding: 24px 0; }
   .flat-hero-text { text-align: center; align-items: center; }
 }
 
@@ -596,10 +597,10 @@ h1 {
 .hero-cta:hover { background: var(--accent-strong); }
 
 @media (max-width: 560px) {
-  .card { padding: 16px; gap: 14px; }
-  .field { padding: 20px 18px; }
-  .rate-breakdown { padding: 18px; gap: 12px; }
-  .hero-cta { height: 54px; }
+  .card { padding: 14px; gap: 10px; }
+  .field { padding: 16px; }
+  .rate-breakdown { padding: 14px; gap: 8px; }
+  .hero-cta { height: 50px; }
 }
 
 section.rates {
