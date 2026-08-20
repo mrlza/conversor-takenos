@@ -176,7 +176,7 @@ html = r"""<!doctype html>
 :root[data-theme="dark"] .footer-logo .logo-dark { display: block; }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; overflow-x: hidden; }
 
 body {
   background: var(--bg);
@@ -257,7 +257,7 @@ body {
 }
 
 @media (max-width: 560px) {
-  .flat-hero { padding: 28px 24px 26px; }
+  .flat-hero { padding: 28px 0 26px; }
   .flat-hero-text { text-align: center; align-items: center; }
 }
 
@@ -423,8 +423,10 @@ h1 {
   top: calc(100% + 8px);
   right: 0;
   width: 260px;
+  max-width: calc(100vw - 32px);
   max-height: 320px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--card);
   border: 1px solid var(--border-strong);
   border-radius: 14px;
@@ -541,7 +543,7 @@ h1 {
   font-weight: 600;
   font-size: 11.7px;
   color: var(--text-muted);
-  white-space: nowrap;
+  min-width: 0;
   text-align: right;
 }
 
@@ -643,6 +645,7 @@ h2 {
   display: flex;
   gap: 12px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 2px 2px 10px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
@@ -837,6 +840,7 @@ section.alerts {
 }
 
 .alerts-card {
+  width: 100%;
   max-width: 700px;
   margin: 0 auto;
   background: var(--surface);
@@ -867,6 +871,7 @@ section.alerts {
 .alerts-title .accent-line { display: block; color: var(--accent-strong); }
 
 .alerts-sub {
+  width: 100%;
   margin: 0 auto;
   max-width: 46ch;
   color: var(--text-muted);
@@ -1036,10 +1041,11 @@ section.alerts {
 @media (max-width: 560px) {
   .alerts-card { padding: 20px; }
   .alerts-threshold { flex-direction: column; align-items: stretch; }
-  .alerts-amount, .alerts-direction { min-width: 0; }
+  .alerts-amount, .alerts-direction { min-width: 0; width: 100%; }
 }
 
 .rates-disclaimer {
+  width: 100%;
   text-align: center;
   font-size: 11px;
   color: var(--text-faint);
@@ -1624,6 +1630,21 @@ section.alerts {
     var d = value >= 100 ? 2 : 4;
     return value.toLocaleString("es-AR", { minimumFractionDigits: d, maximumFractionDigits: d });
   }
+  function fitAmountText(el) {
+    el.style.fontSize = "";
+    var max = parseFloat(getComputedStyle(el).fontSize);
+    var min = max * 0.55;
+    var size = max;
+    while (el.scrollWidth > el.clientWidth + 1 && size > min) {
+      size -= 1;
+      el.style.fontSize = size + "px";
+    }
+  }
+  function fitAmounts() {
+    ["fromAmount", "usdAmount", "toAmount"].forEach(function (id) {
+      fitAmountText(document.getElementById(id));
+    });
+  }
   function flagImg(code) {
     return '<span class="flag-pill"><img class="flag-icon" src="' + FLAGS[code] + '" alt=""></span>';
   }
@@ -1731,6 +1752,7 @@ section.alerts {
     document.getElementById("toAmount").textContent = fmt(result, state.to);
     document.getElementById("usdAmount").value = fmt(toUSD(amount, state.from), "USD");
     refreshRateAndHero();
+    fitAmounts();
   }
 
   function recomputeFromUsd() {
@@ -1740,6 +1762,7 @@ section.alerts {
     document.getElementById("fromAmount").value = fmt(fromUSD(usdAmount, state.from), state.from);
     document.getElementById("toAmount").textContent = fmt(fromUSD(usdAmount, state.to), state.to);
     refreshRateAndHero();
+    fitAmounts();
   }
 
   var fromPicker = buildPicker("fromPicker", fromSel, recompute, ORDER_NO_USD);
