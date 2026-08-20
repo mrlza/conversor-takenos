@@ -257,7 +257,7 @@ body {
 }
 
 @media (max-width: 560px) {
-  .wrap { padding: 24px 20px 56px; }
+  .wrap { padding: 24px 12px 56px; }
   .flat-hero { padding: 24px 0; }
   .flat-hero-text { text-align: center; align-items: center; }
 }
@@ -1168,7 +1168,7 @@ section.alerts {
 }
 
 @media (max-width: 480px) {
-  .wrap { padding: 24px 20px 56px; }
+  .wrap { padding: 24px 12px 56px; }
   .amount-input { font-size: 17px; }
   table { min-width: 420px; }
 }
