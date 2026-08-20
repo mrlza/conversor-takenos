@@ -257,7 +257,8 @@ body {
 }
 
 @media (max-width: 560px) {
-  .flat-hero { padding: 28px 0 26px; }
+  .wrap { padding: 24px 12px 56px; }
+  .flat-hero { padding: 24px 0; }
   .flat-hero-text { text-align: center; align-items: center; }
 }
 
@@ -596,6 +597,13 @@ h1 {
 
 .hero-cta svg { flex-shrink: 0; }
 .hero-cta:hover { background: var(--accent-strong); }
+
+@media (max-width: 560px) {
+  .card { padding: 14px; gap: 10px; }
+  .field { padding: 16px; }
+  .rate-breakdown { padding: 14px; gap: 8px; }
+  .hero-cta { height: 50px; }
+}
 
 section.rates {
   display: flex;
@@ -1166,7 +1174,7 @@ section.alerts {
 }
 
 @media (max-width: 480px) {
-  .wrap { padding: 24px 20px 56px; }
+  .wrap { padding: 24px 12px 56px; }
   .amount-input { font-size: 17px; }
   table { min-width: 420px; }
 }
